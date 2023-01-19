@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,14 +16,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
+Route::group(['prefix' => 'guest'], static function() {
+    Route::get('/welcome', [WelcomeController::class, 'index']);
+
+    Route::get('/news', [NewsController::class, 'index'])
+        ->name('news');
+
+    Route::get('/news/{id}/show', [NewsController::class, 'show'])
+        ->where('id', '\d+')
+        ->name('news.show');
+
+    Route::get('/categories', [CategoriesController::class, 'index'])
+        ->name('categories');
+
+    Route::get('/categories/{category}/show', [CategoriesController::class, 'show'])
+        ->name('categories.show');
 });
 
-Route::get('/welcome/{name}', static function (string $name) : string {
-    return "Hello, {$name}!";
-});
 
-Route::get('/about', static fn() : string => 'About_page');
-Route::get('/contacts', static fn() : string => 'Contacts_page');
-Route::get('/some', static fn() : string => 'Some_text');
+
