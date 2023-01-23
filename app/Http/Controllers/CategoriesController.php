@@ -18,10 +18,10 @@ class CategoriesController extends Controller
 
     public function show($category) : View
     {
-            return \view('categories.show', [
-                'category' => $category,
-                'news' => $this->getNewsByCategory($category)
-            ]);
+        return \view('categories.show', [
+            'category' => $category,
+            'news' => $this->getNewsByCategory($category)
+        ]);
     }
 
 }
