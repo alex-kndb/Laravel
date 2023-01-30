@@ -2,7 +2,10 @@
 
 use App\Http\Controllers\Admin\IndexController as AdminController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\FeedbacksController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\Admin\CategoriesController as AdminCategoriesController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,22 +25,49 @@ Route::get('/', function () {
 });
 
 // admin routes
-Route::group(['prefix' => 'admin'], static function() {
-    Route::get('/', AdminController::class)
-        ->name('admin.index');
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], static function() {
+
+    Route::get(
+        '/',
+        AdminController::class
+    )->name('index');
+
+    Route::resource('categories', AdminCategoriesController::class);
+    Route::resource('news', AdminNewsController::class);
 });
 
 // guest routes
 Route::redirect('/news', '/guest/news');
+
 Route::group(['prefix' => 'guest'], static function() {
-    Route::get('/welcome', [WelcomeController::class, 'index']);
-    Route::get('/news', [NewsController::class, 'index'])
-        ->name('news');
-    Route::get('/news/{id}/show', [NewsController::class, 'show'])
-        ->where('id', '\d+')
+
+    Route::get(
+        '/welcome',
+        [WelcomeController::class, 'index']
+    );
+    Route::get(
+        '/news',
+        [NewsController::class, 'index']
+    )->name('news');
+
+    Route::get(
+        '/news/{id}/show',
+        [NewsController::class, 'show']
+    )->whereNumber('id')
         ->name('news.show');
-    Route::get('/categories', [CategoriesController::class, 'index'])
-        ->name('categories');
-    Route::get('/categories/{category}/show', [CategoriesController::class, 'show'])
+
+    Route::get(
+        '/categories',
+        [CategoriesController::class, 'index']
+    )->name('categories');
+
+    Route::get(
+        '/categories/{category}/show',
+        [CategoriesController::class, 'show']
+    )->whereAlpha('category')
         ->name('categories.show');
+
+    Route::resource('feedbacks',FeedbacksController::class);
 });
+
+

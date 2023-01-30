@@ -26,8 +26,6 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             @yield('content')
 
-            <x-alert type="info" message="information!"></x-alert>
-
         </main>
 
     </div>
