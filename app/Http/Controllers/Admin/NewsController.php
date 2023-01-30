@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\News;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,13 @@ class NewsController extends Controller
      */
     public function index() : View
     {
-        return \view('admin.news.index');
+        $newsRepo = new News();
+        $newsList = $newsRepo->getNews();
+        return \view(
+            'admin.news.index', [
+                'newsList' => $newsList
+            ]
+        );
     }
 
     /**
@@ -41,7 +48,7 @@ class NewsController extends Controller
 //        $request->validate([
 //           'title' => 'required'
 //        ]);
-        dd($request->all());
+//        dd($request->all());
     }
 
     /**
