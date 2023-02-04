@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class News extends Model
 {
@@ -13,13 +14,21 @@ class News extends Model
 
     protected $table = 'news';
 
-    public function getNews()
+    protected $fillable = [
+        'title',
+        'author',
+        'status',
+        'image',
+        'description'
+    ];
+
+    protected $casts = [
+        'categories_id' => 'array',
+    ];
+
+    public function categories(): BelongsToMany
     {
-        return \DB::table($this->table)->get();
+        return $this->belongsToMany(Category::class, 'category_has_news');
     }
 
-    public function getNewsById(int $id)
-    {
-        return \DB::table($this->table)->find($id);
-    }
 }
