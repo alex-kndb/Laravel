@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\News;
+use App\QueryBuilders\CategoriesQueryBuilder;
+use App\QueryBuilders\NewsQueryBuilder;
 use Illuminate\View\View;
 
 class NewsController extends Controller
@@ -14,17 +14,20 @@ class NewsController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param NewsQueryBuilder $newsQueryBuilder
+     * @param CategoriesQueryBuilder $categoriesQueryBuilder
      * @return View
      */
 
-    public function index() : View
+    public function index(
+        NewsQueryBuilder $newsQueryBuilder,
+        CategoriesQueryBuilder $categoriesQueryBuilder
+    ) : View
     {
-        $newsRepo = new News();
-        $catRepo = new Category();
 
         return \view('news.index', [
-            'news' => $newsRepo->getNews(),
-            'categories' => $catRepo->getCategories(),
+            'news' => $newsQueryBuilder->getNewsWithPagination(),
+           'categories' => $categoriesQueryBuilder->getAll(),
         ]);
     }
 
@@ -32,16 +35,20 @@ class NewsController extends Controller
      * Display the specified resource.
      *
      * @param int $id
+     * @param NewsQueryBuilder $newsQueryBuilder
+     * @param CategoriesQueryBuilder $categoriesQueryBuilder
      * @return View
      */
 
-    public function show(int $id) : View
+    public function show(
+        int $id,
+        NewsQueryBuilder $newsQueryBuilder,
+        CategoriesQueryBuilder $categoriesQueryBuilder
+    ) : View
     {
-        $newsRepo = new News();
-        $catRepo = new Category();
         return \view('news.show', [
-            'news' => $newsRepo->getNewsById($id),
-            'categories' => $catRepo->getCategories(),
+            'news' => $newsQueryBuilder->getOne($id),
+            'categories' => $categoriesQueryBuilder->getAll(),
         ]);
     }
 }

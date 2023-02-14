@@ -2,27 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\QueryBuilders\CategoriesQueryBuilder;
+use App\QueryBuilders\NewsQueryBuilder;
 use Illuminate\View\View;
 
 class CategoriesController extends Controller
 {
-    use NewsTrait;
-    use CategoriesTrait;
 
-    public function index() : View
+    public function index(CategoriesQueryBuilder $categoriesQueryBuilder) : View
     {
-        $catRepo = new Category();
         return \view('categories.index', [
-            'categories' => $catRepo->getCategories()
+            'categories' => $categoriesQueryBuilder->getAll()
         ]);
     }
 
-    public function show($category) : View
+    public function show(
+//        string $category,
+//        NewsQueryBuilder $newsQueryBuilder,
+        CategoriesQueryBuilder $categoriesQueryBuilder
+    ) : View
     {
         return \view('categories.show', [
-            'category' => $category,
-            'news' => $this->getNewsByCategory($category)
+            'category' => $categoriesQueryBuilder->getAll(),
+//            'news' => $newsQueryBuilder->getNewsBycategory($category)
         ]);
     }
 }

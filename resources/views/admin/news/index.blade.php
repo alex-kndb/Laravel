@@ -3,13 +3,26 @@
 
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Все новости</h1>
+        <p><a href="{{ route('admin.news.create') }}">Добавить новость</a></p>
     </div>
+
+    @if ($errors->any())
+        @foreach($errors->all() as $error)
+            <x-alert type="danger" :message="$error"></x-alert>
+        @endforeach
+    @endif
+
+    @if (session('status'))
+        <x-alert type="success" message="{{ session('status') }}"></x-alert>
+    @endif
+
 
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>#ID</th>
+                    <th>Категория</th>
                     <th>Заголовок</th>
                     <th>Автор</th>
                     <th>Статус</th>
@@ -22,14 +35,15 @@
                 @forelse ($newsList as $news)
                     <tr>
                         <td>{{ $news->id }}</td>
+                        <td>{{ $news->categories->map(fn($item) => $item->title)->implode(",") }}</td>
                         <td>{{ $news->title }}</td>
                         <td>{{ $news->author }}</td>
                         <td>{{ $news->status }}</td>
                         <td>{{ $news->description }}</td>
                         <td>{{ $news->created_at }}</td>
                         <td>
-                            <a href="" style="color:blue">Изм.</a> &nbsp;
-                            <a href="" style="color:red">Уд.</a>
+                            <a href="{{ route('admin.news.edit', ['news' => $news]) }}" style="color:blue">Изм.</a> &nbsp;
+                            <a href="{{ route('admin.news.destroy', ['news' => $news]) }}" style="color:red">Уд.</a>
                         </td>
                     </tr>
                 @empty
@@ -39,5 +53,8 @@
                 @endforelse
             </tbody>
         </table>
+
+        {{ $newsList->links() }}
+
     </div>
 @endsection
