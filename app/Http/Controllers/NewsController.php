@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\News;
 use Illuminate\View\View;
 
 class NewsController extends Controller
 {
-    use NewsTrait;
-    use CategoriesTrait;
 
     /**
      * Display a listing of the resource.
@@ -19,9 +19,12 @@ class NewsController extends Controller
 
     public function index() : View
     {
+        $newsRepo = new News();
+        $catRepo = new Category();
+
         return \view('news.index', [
-            'news' => $this->getNews(),
-            'categories' => $this->getCategories()
+            'news' => $newsRepo->getNews(),
+            'categories' => $catRepo->getCategories(),
         ]);
     }
 
@@ -34,8 +37,11 @@ class NewsController extends Controller
 
     public function show(int $id) : View
     {
+        $newsRepo = new News();
+        $catRepo = new Category();
         return \view('news.show', [
-            'news' => $this->getNewsById($id)
+            'news' => $newsRepo->getNewsById($id),
+            'categories' => $catRepo->getCategories(),
         ]);
     }
 }

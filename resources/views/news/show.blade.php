@@ -6,10 +6,10 @@
             <div class="col-md-8 blog-main">
 
                 <div class="blog-post">
-                    <h2 class="blog-post-title">{{ $news['title'] }}</h2>
-                    <p class="blog-post-meta">{{ $news['created_at'] }} by <a href="#">{{ $news['author'] }}</a></p>
+                    <h2 class="blog-post-title">{{ $news->title }}</h2>
+                    <p class="blog-post-meta">{{ $news->created_at }} by <a href="#">{{ $news->author }}</a></p>
 
-                    <p>{{ $news['text'] }}</p>
+                    <p>{{ $news->description }}</p>
                 </div><!-- /.blog-post -->
 
                 <nav class="blog-pagination">

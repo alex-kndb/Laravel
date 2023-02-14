@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\View\View;
 
 class CategoriesController extends Controller
@@ -11,8 +12,9 @@ class CategoriesController extends Controller
 
     public function index() : View
     {
+        $catRepo = new Category();
         return \view('categories.index', [
-            'categories' => $this->getCategories()
+            'categories' => $catRepo->getCategories()
         ]);
     }
 
@@ -23,5 +25,4 @@ class CategoriesController extends Controller
             'news' => $this->getNewsByCategory($category)
         ]);
     }
-
 }
