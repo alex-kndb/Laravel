@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Categories\CreateRequest;
+use App\Http\Requests\Admin\Categories\EditRequest;
 use App\Models\Category;
+use App\Models\News;
 use App\QueryBuilders\CategoriesQueryBuilder;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -38,16 +42,12 @@ class CategoriesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param CreateRequest $request
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(CreateRequest $request): RedirectResponse
     {
-        $request->validate([
-            'title' => 'required'
-        ]);
-
-        $category = new Category($request->except('_token'));
+        $category = new Category($request->validated());
         if ($category->save()) {
             return \redirect()->route('admin.categories.index')->with('status', 'Категория добавлена!');
         }
@@ -81,13 +81,13 @@ class CategoriesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param EditRequest $request
      * @param Category $category
      * @return RedirectResponse
      */
-    public function update(Request $request, Category $category) : RedirectResponse
+    public function update(EditRequest $request, Category $category) : RedirectResponse
     {
-        $category = $category->fill($request->except('_token'));
+        $category = $category->fill($request->validated());
         if ($category->save()) {
             return \redirect()->route('admin.categories.index')->with('success', 'Категория успешно обновлена');
         }
@@ -98,11 +98,17 @@ class CategoriesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Category $category
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Category $category): JsonResponse
     {
-        //
+        try{
+            $category->delete();
+            return \response()->json('ok');
+        } catch (\Exception $exception) {
+            \Log::error($exception->getMessage(), [$exception]);
+            return \response()->json('error', 400);
+        }
     }
 }

@@ -45,9 +45,4 @@ final class NewsQueryBuilder extends QueryBuilder
         return $this->model->with('categories')->paginate($quantity);
     }
 
-    public function deleteNews(int $id) : bool
-    {
-        return $this->getOne($id)->delete();
-//        $this->model->destroy($id);
-    }
 }

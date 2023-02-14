@@ -40,11 +40,11 @@
             </div>
 
             <div class="form-group">
-                <label for="formInput">Заголовок</label>
+                <label for="title">Заголовок</label>
                 <input
                     type="text"
                     class="form-control"
-                    id="formInput"
+                    id="title"
                     name="title"
                     placeholder="..."
                     value="{{ old('title') }}"
@@ -55,7 +55,8 @@
                 <input
                     type="text"
                     class="form-control"
-                    id="author" name="author"
+                    id="author"
+                    name="author"
                     placeholder="..."
                     value="{{ old('author') }}"
                 >

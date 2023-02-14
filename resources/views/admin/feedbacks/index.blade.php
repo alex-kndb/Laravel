@@ -2,8 +2,7 @@
 @section('content')
 
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Все новости</h1>
-        <p><a href="{{ route('admin.news.create') }}">Добавить новость</a></p>
+        <h1 class="h2">Отзывы</h1>
     </div>
 
     @if ($errors->any())
@@ -16,47 +15,41 @@
         <x-alert type="success" message="{{ session('status') }}"></x-alert>
     @endif
 
-
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead>
+    <nav class="nav d-flex justify-content-between">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
                 <tr>
                     <th>#ID</th>
-                    <th>Категория</th>
-                    <th>Заголовок</th>
                     <th>Автор</th>
-                    <th>Статус</th>
+                    <th>Заголовок</th>
                     <th>Описание</th>
                     <th>Дата добавления</th>
                     <th>Действие</th>
                 </tr>
-            </thead>
-            <tbody>
-                @forelse ($newsList as $news)
+                </thead>
+                <tbody>
+                @forelse ($feedbacks as $feedback)
                     <tr>
-                        <td>{{ $news->id }}</td>
-                        <td>{{ $news->categories->map(fn($item) => $item->title)->implode(",") }}</td>
-                        <td>{{ $news->title }}</td>
-                        <td>{{ $news->author }}</td>
-                        <td>{{ $news->status }}</td>
-                        <td>{{ $news->description }}</td>
-                        <td>{{ $news->created_at }}</td>
+                        <td>{{ $feedback->id }}</td>
+                        <td>{{ $feedback->author }}</td>
+                        <td>{{ $feedback->title }}</td>
+                        <td>{{ $feedback->feedback }}</td>
+                        <td>{{ $feedback->created_at }}</td>
                         <td>
-                            <a href="{{ route('admin.news.edit', ['news' => $news]) }}" style="color:blue">Изм.</a> &nbsp;
-                            <a href="javascript:" class="delete" rel="{{ $news->id }}" style="color:red">Уд.</a>
+                            <a href="{{ route('admin.feedbacks.edit', ['feedback' => $feedback]) }}" style="color:blue">Изм.</a> &nbsp;
+                            <a href="javascript:" class="delete" rel="{{ $feedback->id }}" style="color:red">Уд.</a>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8">Новостей нет</td>
+                        <td colspan="6">Отзывов нет</td>
                     </tr>
                 @endforelse
-            </tbody>
-        </table>
-
-        {{ $newsList->links() }}
-
-    </div>
+                </tbody>
+            </table>
+        </div>
+    </nav>
 @endsection
 
 @push('js')
@@ -67,8 +60,8 @@
             elements.forEach(function(item) {
                 item.addEventListener("click", function() {
                     const id = this.getAttribute('rel');
-                    if(confirm(`Вы действительно хотите удалить новость? (#ID = ${id})`)) {
-                        send(`/admin/news/${id}`).then(() => {
+                    if(confirm(`Вы действительно хотите удалить отзыв? (#ID = ${id})`)) {
+                        send(`/admin/feedbacks/${id}`).then(() => {
                             location.reload();
                         });
                     }
