@@ -30,4 +30,12 @@ class CreateRequest extends FormRequest
             'description' => ['nullable', 'string', 'max:255'],
         ];
     }
+
+    public function attributes() : array
+    {
+        return [
+            'title' => 'Название',
+            'description' => 'Описание',
+        ];
+    }
 }

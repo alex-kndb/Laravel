@@ -32,10 +32,10 @@
         </div>
 
         <div class="form-group">
-            <label for="title">Заголовок отзыва</label>
+            <label for="title">Тема</label>
             <input
                 type="text"
-                class="form-control"
+                class="form-control @error('title') is-invalid @enderror"
                 id="title"
                 name="title"
                 placeholder="..."
@@ -44,9 +44,9 @@
         </div>
 
         <div class="form-group">
-            <label for="feedback">Текст отзыва</label>
+            <label for="feedback">Отзыв</label>
             <textarea
-                class="form-control"
+                class="form-control @error('feedback') is-invalid @enderror"
                 id="feedback"
                 name="feedback"
                 placeholder="..."

@@ -10,9 +10,8 @@
                 <x-alert type="danger" :message="$error"></x-alert>
             @endforeach
         @endif
-
         @if (session('status'))
-                <x-alert type="success" message="{{ session('status') }}"></x-alert>
+            <x-alert type="success" message="{{ session('status') }}"></x-alert>
         @endif
 
         <div class="form-group row">
@@ -20,7 +19,7 @@
             <div class="col-sm-10">
                 <input
                     type="text"
-                    class="form-control form-control-lg"
+                    class="form-control form-control-lg @error('author') is-invalid @enderror"
                     id="author"
                     name="author"
                     placeholder="Имя"
@@ -33,7 +32,7 @@
             <div class="col-sm-10">
                 <input
                     type="text"
-                    class="form-control form-control-lg"
+                    class="form-control form-control-lg @error('title') is-invalid @enderror"
                     id="title"
                     name="title"
                     placeholder="Заголовок..."
@@ -42,9 +41,14 @@
                 <br>
             </div>
 
-                <label for="feedback" class="col-sm-2 col-form-label col-form-label-lg">Сообщение</label>
+            <label for="feedback" class="col-sm-2 col-form-label col-form-label-lg">Сообщение</label>
             <div class="col-sm-10">
-                <textarea name="feedback" id="feedback" placeholder="...">{{ old('feedback') }}</textarea>
+                <textarea
+                    class="@error('feedback') is-invalid @enderror"
+                    name="feedback"
+                    id="feedback"
+                    placeholder="...">{{ old('feedback') }}
+                </textarea>
             </div>
 
             <button type="submit" class="btn btn-success mb-2">Сохранить</button>

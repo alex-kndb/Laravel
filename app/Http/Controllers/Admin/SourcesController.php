@@ -49,11 +49,11 @@ class SourcesController extends Controller
     {
         $source = Source::create($request->validated());
         if ($source) {
-            return \redirect()->route('admin.sources.index')->with('status', 'Источник новостей добавлен!');
+            return \redirect()->route('admin.sources.index')
+                ->with('status', __('messages.admin.source.create.success'));
         }
 
-        return \back()->with('error', 'Не удалось добавить источник новостей!');
-
+        return \back()->with('error', __('messages.admin.source.create.fail'));
     }
 
     /**
@@ -91,9 +91,10 @@ class SourcesController extends Controller
     {
         $source = $source->fill($request->validated());
         if ($source->save()) {
-            return \redirect()->route('admin.sources.index')->with('success', 'Источник новостей успешно обновлен!');
+            return \redirect()->route('admin.sources.index')
+                ->with('success', __('messages.admin.source.edit.success'));
         }
-        return \back()->with('error', 'Не удалось сохранить запись!');
+        return \back()->with('error', __('messages.admin.source.edit.fail'));
     }
 
     /**

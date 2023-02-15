@@ -49,9 +49,10 @@ class CategoriesController extends Controller
     {
         $category = new Category($request->validated());
         if ($category->save()) {
-            return \redirect()->route('admin.categories.index')->with('status', 'Категория добавлена!');
+            return \redirect()->route('admin.categories.index')
+                ->with('status', __('messages.admin.category.create.success'));
         }
-        return \back()->with('error', 'Не удалось добавит категорию!');
+        return \back()->with('error', __('messages.admin.category.create.fail'));
     }
 
 
@@ -89,9 +90,10 @@ class CategoriesController extends Controller
     {
         $category = $category->fill($request->validated());
         if ($category->save()) {
-            return \redirect()->route('admin.categories.index')->with('success', 'Категория успешно обновлена');
+            return \redirect()->route('admin.categories.index')
+                ->with('success', __('messages.admin.category.edit.success'));
         }
-        return \back()->with('error', 'Не удалось изменить категорию');
+        return \back()->with('error', __('messages.admin.category.edit.fail'));
 
     }
 

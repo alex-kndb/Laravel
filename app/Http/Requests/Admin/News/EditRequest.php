@@ -43,4 +43,13 @@ class EditRequest extends FormRequest
         return (array) $this->validated('category_ids');
     }
 
+    public function attributes() : array
+    {
+        return [
+            'title' => 'Заголовок',
+            'author' => 'Автор',
+            'description' => 'Текст новости',
+            'category_ids' => 'Категория',
+        ];
+    }
 }

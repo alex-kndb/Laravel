@@ -31,4 +31,14 @@ class CreateRequest extends FormRequest
             'feedback' => ['required', 'string', 'max:255']
         ];
     }
+
+    public function attributes() : array
+    {
+        return [
+            'author' => 'Автор',
+            'title' => 'Тема',
+            'feedback' => 'Отзыв',
+        ];
+    }
+
 }

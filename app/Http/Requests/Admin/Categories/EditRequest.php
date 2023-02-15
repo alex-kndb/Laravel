@@ -29,6 +29,13 @@ class EditRequest extends FormRequest
             'title' => ['required', 'string', 'max:50'],
             'description' => ['nullable', 'string', 'max:255'],
         ];
+    }
 
+    public function attributes() : array
+    {
+        return [
+            'title' => 'Название',
+            'description' => 'Описание',
+        ];
     }
 }

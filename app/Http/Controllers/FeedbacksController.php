@@ -57,19 +57,11 @@ class FeedbacksController extends Controller
     {
         $feedback = new Feedback($request->validated());
 
-        // Для формы заказа выгрузки
-//        $request->validate([
-//            'name' => 'required',
-//            'phone' => 'required',
-//            'email' => 'required',
-//            'info' => 'required | max:255',
-//        ]);
-
         if ($feedback->save()) {
-            return \redirect()->route('feedbacks.index')->with('status', 'Отзыв добавлен!');
+            return \redirect()->route('feedbacks.index')
+                ->with('status', __('messages.guest.feedback.create.success'));
         }
-
-        return \back()->with('error', 'Не удалось добавить отзыв!');
+        return \back()->with('error', __('messages.guest.feedback.create.fail'));
 
     }
 

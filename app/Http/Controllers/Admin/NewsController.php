@@ -58,17 +58,11 @@ class NewsController extends Controller
         $news = News::create($request->validated());
         if ($news) {
             $news->categories()->attach($request->getCategoryIds());
-            return \redirect()->route('admin.news.index')->with('status', 'Новость добавлена!');
+            return \redirect()->route('admin.news.index')
+                ->with('success', __('messages.admin.news.create.success'));
         }
 
-        return \back()->with('error', 'Не удалось добавить новость!');
-
-//        $news = new News($request->validated());
-//        if ($news->save()) {
-//            $news->categories()->sync((array) $request->input('category_ids'));
-//            return \redirect()->route('admin.news.index')->with('status', 'Новость добавлена!');
-//        }
-//        return \back()->with('error', 'Не удалось добавить новость!');
+        return \back()->with('error', __('messages.admin.news.create.fail'));
     }
 
     /**
@@ -110,9 +104,10 @@ class NewsController extends Controller
         $news = $news->fill($request->validated());
         if ($news->save()) {
             $news->categories()->sync($request->getCategoryIds());
-            return \redirect()->route('admin.news.index')->with('success', 'Новость успешно обновлена!');
+            return \redirect()->route('admin.news.index')
+                ->with('success', __('messages.admin.news.edit.success'));
         }
-        return \back()->with('error', 'Не удалось сохранить запись!');
+        return \back()->with('error', __('messages.admin.news.edit.fail'));
     }
 
     /**

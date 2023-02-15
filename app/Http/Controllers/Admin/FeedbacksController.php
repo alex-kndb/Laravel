@@ -84,9 +84,10 @@ class FeedbacksController extends Controller
     {
         $feedback = $feedback->fill($editRequest->validated());
         if ($feedback->save()) {
-            return \redirect()->route('admin.feedbacks.index')->with('success', 'Отзыв успешно обновлен!');
+            return \redirect()->route('admin.feedbacks.index')
+                ->with('success', __('messages.admin.feedback.edit.success'));
         }
-        return \back()->with('error', 'Не удалось изменить отзыв!');
+        return \back()->with('error', __('messages.admin.feedback.edit.fail'));
     }
 
     /**

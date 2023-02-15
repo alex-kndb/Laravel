@@ -30,6 +30,15 @@ class EditRequest extends FormRequest
             'title' => ['required', 'string', 'max:50'],
             'feedback' => ['required', 'string', 'max:255'],
         ];
-
     }
+
+    public function attributes() : array
+    {
+        return [
+            'author' => 'Автор',
+            'title' => 'Тема',
+            'feedback' => 'Отзыв',
+        ];
+    }
+
 }
