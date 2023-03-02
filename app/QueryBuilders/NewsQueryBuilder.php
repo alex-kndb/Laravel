@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\QueryBuilders;
 
+use App\Enums\NewsStatus;
 use App\Models\News;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
