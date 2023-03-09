@@ -19,10 +19,10 @@
             @csrf
 
             <div class="form-group">
-                <label for="title">Заголовок</label>
+                <label for="title">Название</label>
                 <input
                     type="text"
-                    class="form-control"
+                    class="form-control @error('title') is-invalid @enderror"
                     id="title"
                     name="title"
                     placeholder="..."
@@ -33,7 +33,7 @@
             <div class="form-group">
                 <label for="description">Описание</label>
                 <textarea
-                    class="form-control"
+                    class="form-control @error('description') is-invalid @enderror"
                     id="description"
                     name="description"
                     placeholder="..."

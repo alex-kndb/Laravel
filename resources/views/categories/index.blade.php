@@ -1,8 +1,10 @@
-@extends('layouts.main')
-@section('content')
+{{--@extends('layouts.main')--}}
+{{--@section('categories')--}}
     <nav class="nav d-flex justify-content-between">
-        @foreach($categories as $category)
+        @forelse($categories as $category)
             <a class="p-2 text-muted" href="{{ route('categories.show', ['category' => $category->id]) }}">{{ $category->title }}</a>
-        @endforeach
+        @empty
+            <p>Нет категорий!</p>
+        @endforelse
     </nav>
-@endsection
+{{--@endsection--}}

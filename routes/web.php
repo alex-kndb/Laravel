@@ -1,12 +1,19 @@
 <?php
 
+use App\Http\Controllers\Account\IndexController as AccountController;
 use App\Http\Controllers\Admin\IndexController as AdminController;
+use App\Http\Controllers\Admin\SourcesController as AdminSourcesController;
+use App\Http\Controllers\Admin\UsersController as AdminUsersController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\FeedbacksController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Admin\CategoriesController as AdminCategoriesController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\FeedbacksController as AdminFeedbacksController;
 use App\Http\Controllers\WelcomeController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,16 +31,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::group(['middleware' => 'auth'], static function() {
+    Route::get('/account', AccountController::class)->name('account');
+    Route::get('/logout', [LoginController::class, 'logout'])->name('account.logout');
+});
+
 // admin routes
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], static function() {
-
-    Route::get(
-        '/',
-        AdminController::class
-    )->name('index');
-
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'is_admin'], static function() {
+    Route::get('/', AdminController::class)->name('index');
     Route::resource('categories', AdminCategoriesController::class);
     Route::resource('news', AdminNewsController::class);
+    Route::resource('feedbacks', AdminFeedbacksController::class);
+    Route::resource('sources', AdminSourcesController::class);
+    Route::resource('users', AdminUsersController::class);
 });
 
 // guest routes
@@ -71,3 +81,7 @@ Route::group(['prefix' => 'guest'], static function() {
 });
 
 
+
+Auth::routes();
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');

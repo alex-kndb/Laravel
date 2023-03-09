@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Guest\Feedbacks\CreateRequest;
+use App\Models\Feedback;
+use App\QueryBuilders\CategoriesQueryBuilder;
+use App\QueryBuilders\FeedbacksQueryBuilder;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,10 +19,24 @@ class FeedbacksController extends Controller
      *
      * @return View
      */
-    public function index() : View
+    public function index(FeedbacksQueryBuilder $feedbacksQueryBuilder, CategoriesQueryBuilder $categoriesQueryBuilder) : View
     {
-        return \view('feedbacks.index');
+        return \view('feedbacks.index', [
+            'feedbacks' => $feedbacksQueryBuilder->getFeedbacksWithPagination(),
+            'categories' => $categoriesQueryBuilder->getAll()
+        ]);
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     */
+    public function show($id)
+    {
+        //
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -32,87 +50,19 @@ class FeedbacksController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
+     * @param CreateRequest $request
      * @return RedirectResponse
      */
-    public function store(Request $request) : RedirectResponse
+    public function store(CreateRequest $request) : RedirectResponse
     {
-        define('JSON_STORAGE', __DIR__.'/../../../storage/json/');
+        $feedback = new Feedback($request->validated());
 
-        // Для формы комментария
-        $request->validate([
-           'name' => 'required',
-           'comment' => 'required | max:255'
-        ]);
-
-        // Для формы заказа выгрузки
-//        $request->validate([
-//            'name' => 'required',
-//            'phone' => 'required',
-//            'email' => 'required',
-//            'info' => 'required | max:255',
-//        ]);
-
-        $data = $request->except('_token');
-
-//        Laravel ругается, что нет прав на доступ к папке/файлу или их не существует.
-//        Создал файл storage/json/json.txt.
-//        Поменял права на папку с файлом на 777.
-//        Знаю, что так плохо делать, но у меня и Laravel вообще не запускался,
-//        пока не прописал права 777 на storage/logs.
-
-        if(!file_put_contents(JSON_STORAGE.'json.txt', $data, FILE_APPEND)) {
-            die('not ok');
+        if ($feedback->save()) {
+            return \redirect()->route('feedbacks.index')
+                ->with('status', __('messages.guest.feedback.create.success'));
         }
-
-        return redirect('guest/feedbacks/create')
-                ->withInput($request->except('comment'))
-                ->with('status', 'New comment was added!');
+        return \back()->with('error', __('messages.guest.feedback.create.fail'));
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

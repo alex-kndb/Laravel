@@ -27,7 +27,7 @@ class NewsController extends Controller
 
         return \view('news.index', [
             'news' => $newsQueryBuilder->getNewsWithPagination(),
-           'categories' => $categoriesQueryBuilder->getAll(),
+            'categories' => $categoriesQueryBuilder->getAll(),
         ]);
     }
 

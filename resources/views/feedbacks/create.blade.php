@@ -10,28 +10,45 @@
                 <x-alert type="danger" :message="$error"></x-alert>
             @endforeach
         @endif
-
         @if (session('status'))
-                <x-alert type="success" message="{{ session('status') }}"></x-alert>
+            <x-alert type="success" message="{{ session('status') }}"></x-alert>
         @endif
 
         <div class="form-group row">
-            <label for="inputName" class="col-sm-2 col-form-label col-form-label-lg">Имя</label>
+            <label for="author" class="col-sm-2 col-form-label col-form-label-lg">Имя</label>
             <div class="col-sm-10">
                 <input
                     type="text"
-                    class="form-control form-control-lg"
-                    id="inputName"
-                    name="name"
-                    placeholder="Name"
-                    value="{{ old('name') }}"
+                    class="form-control form-control-lg @error('author') is-invalid @enderror"
+                    id="author"
+                    name="author"
+                    placeholder="Имя"
+                    value="{{ old('author') }}"
                 >
                 <br>
             </div>
 
-            <label for="inputInfo" class="col-sm-2 col-form-label col-form-label-lg">Комментарий</label>
+            <label for="title" class="col-sm-2 col-form-label col-form-label-lg">Тема</label>
             <div class="col-sm-10">
-                <textarea name="comment" id="inputInfo" placeholder="...">{{ old('comment') }}</textarea>
+                <input
+                    type="text"
+                    class="form-control form-control-lg @error('title') is-invalid @enderror"
+                    id="title"
+                    name="title"
+                    placeholder="Заголовок..."
+                    value="{{ old('title') }}"
+                >
+                <br>
+            </div>
+
+            <label for="feedback" class="col-sm-2 col-form-label col-form-label-lg">Сообщение</label>
+            <div class="col-sm-10">
+                <textarea
+                    class="@error('feedback') is-invalid @enderror"
+                    name="feedback"
+                    id="feedback"
+                    placeholder="...">{{ old('feedback') }}
+                </textarea>
             </div>
 
             <button type="submit" class="btn btn-success mb-2">Сохранить</button>

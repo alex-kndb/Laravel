@@ -16,15 +16,11 @@ class CategoriesController extends Controller
         ]);
     }
 
-    public function show(
-//        string $category,
-//        NewsQueryBuilder $newsQueryBuilder,
-        CategoriesQueryBuilder $categoriesQueryBuilder
-    ) : View
+    public function show(CategoriesQueryBuilder $categoriesQueryBuilder) : View
     {
         return \view('categories.show', [
             'category' => $categoriesQueryBuilder->getAll(),
-//            'news' => $newsQueryBuilder->getNewsBycategory($category)
+//            'news' => $newsQueryBuilder->getNewsByCategory($category)
         ]);
     }
 }

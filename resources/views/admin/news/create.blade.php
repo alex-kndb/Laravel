@@ -20,7 +20,7 @@
 
             <div class="form-group">
                 <label for="category_ids">Категория</label>
-                <select class="form-control" name="category_ids[]" id="category_ids" multiple>
+                <select class="form-control @error('category_ids[]') is-invalid @enderror" name="category_ids[]" id="category_ids" multiple>
                     <option value="0">*** Выберете категорию ***</option>
                     @foreach ($categories as $category)
                         <option @if((int) old('category_id') === $category->id) selected @endif value="{{ $category->id }}">{{ $category->title }}</option>                    @endforeach
@@ -40,11 +40,11 @@
             </div>
 
             <div class="form-group">
-                <label for="formInput">Заголовок</label>
+                <label for="title">Заголовок</label>
                 <input
                     type="text"
-                    class="form-control"
-                    id="formInput"
+                    class="form-control @error('title') is-invalid @enderror"
+                    id="title"
                     name="title"
                     placeholder="..."
                     value="{{ old('title') }}"
@@ -54,8 +54,9 @@
                 <label for="author">Автор</label>
                 <input
                     type="text"
-                    class="form-control"
-                    id="author" name="author"
+                    class="form-control @error('author') is-invalid @enderror"
+                    id="author"
+                    name="author"
                     placeholder="..."
                     value="{{ old('author') }}"
                 >
@@ -74,7 +75,7 @@
             <div class="form-group">
                 <label for="description">Текст новости</label>
                 <textarea
-                    class="form-control"
+                    class="form-control @error('description') is-invalid @enderror"
                     id="description"
                     name="description"
                     placeholder="..."
