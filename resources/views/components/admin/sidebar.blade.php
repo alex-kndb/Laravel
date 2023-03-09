@@ -44,6 +44,21 @@
                 </a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link @if (request()->routeIs('admin.parser')) active @endif" href="{{ route('admin.parser.index') }}">
+                    <span data-feather="bar-chart-2"></span>
+                    Парсер
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link @if (request()->routeIs('laravel-filemanager.*')) active @endif" href="{{ route('unisharp.lfm.show') }}">
+                    <span data-feather="bar-chart-2"></span>
+                    Файловый менеджер
+                </a>
+            </li>
+
+
         </ul>
     </div>
 </nav>

@@ -21,6 +21,7 @@ class UsersController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param UsersQueryBuilder $usersQueryBuilder
      * @return View
      */
     public function index(UsersQueryBuilder $usersQueryBuilder) : View

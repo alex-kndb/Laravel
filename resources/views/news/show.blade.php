@@ -8,14 +8,24 @@
                 <div class="blog-post">
                     <h2 class="blog-post-title">{{ $news->title }}</h2>
                     <p class="blog-post-meta">{{ $news->created_at }} by <a href="#">{{ $news->author }}</a></p>
+                    <img
+                        class="card-img-left flex-auto d-none d-lg-block"
+                        @if(empty($n->image))
+                            data-src="holder.js/200x247?theme=thumb"
+                        @elseif(str_starts_with($n->image, 'http'))
+                            src="{{ $n->image }}"
+                        @else
+                            src="{{ Storage::disk('public')->url($n->image) }}"
+                        @endif
+                        alt="Изображение для новости"
+                    >
 
                     <p>{{ $news->description }}</p>
+
                 </div><!-- /.blog-post -->
 
-                <nav class="blog-pagination">
-                    <a class="btn btn-outline-primary" href="#">Older</a>
-                    <a class="btn btn-outline-secondary disabled" href="#">Newer</a>
-                </nav>
+                <a class="btn btn-outline-primary" href="{{ back() }}">Назад</a>
+
 
             </div><!-- /.blog-main -->
 
