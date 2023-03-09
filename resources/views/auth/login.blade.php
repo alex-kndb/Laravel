@@ -51,6 +51,12 @@
                             </div>
                         </div>
 
+                        <div class="row mb-3">
+                            <div class="col-md-6 offset-md-4">
+                                <a href="{{ route('social.auth.redirect', ['driver' => 'github']) }}">Вход через Github</a>
+                            </div>
+                        </div>
+
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
@@ -64,6 +70,7 @@
                                 @endif
                             </div>
                         </div>
+
                     </form>
                 </div>
             </div>
