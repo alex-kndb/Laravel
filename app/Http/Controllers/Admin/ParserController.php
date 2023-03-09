@@ -5,37 +5,34 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Services\Contracts\Parser;
+use App\Jobs\JobNewsParsing;
+use App\Models\Source;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class ParserController extends Controller
 {
-    use ParserTrait;
+
+    public function index(): View
+    {
+        return \view('admin.parser.index');
+    }
 
     /**
      * Handle the incoming request.
      *
-     * @param Request $request
-     * @param Parser $parser
      * @return RedirectResponse
      */
-    public function __invoke(Request $request, Parser $parser): RedirectResponse
+    public function parse(): RedirectResponse
     {
-        $link = 'https://www.vedomosti.ru/rss/issue.xml';
-        $data =  $parser->setLink($link)->getParseData();
-
-        if(empty($data)) {
-            return redirect()->route('admin.index')->with('error', "Не удалось спарсить новости!");
+        foreach (Source::all() as $source) {
+            try {
+                \dispatch(new JobNewsParsing($source->url));
+            } catch (\Exception $e) {
+                return redirect()->route('admin.parser.index')->with('error', $e->getMessage());
+            }
         }
 
-        try {
-            $count = $this->saveParsingNewsToDb($data);
-        } catch (\Exception $e) {
-            return redirect()->route('admin.index')->with('error', "Не удалось сохранить новости после парсинга! ".$e->getMessage());
-        }
-
-        return redirect()->route('admin.index')->with('status', "$count новостей было сохранено!");
+        return redirect()->route('admin.parser.index')->with('status', "Новости были сохранены!");
     }
 }

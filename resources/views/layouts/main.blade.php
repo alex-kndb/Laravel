@@ -44,9 +44,9 @@
 <script src="{{ asset('assets/js/holder.min.js') }}"></script>
 <script>
     Holder.addTheme('thumb', {
-        bg: '#55595c',
-        fg: '#eceeef',
-        text: 'Thumbnail'
+        bg: '#FFFAFA',
+        fg: '#FFA07A',
+        text: 'News image'
     });
 </script>
 </body>

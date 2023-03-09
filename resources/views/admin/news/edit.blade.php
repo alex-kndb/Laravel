@@ -15,7 +15,7 @@
         <x-alert type="success" message="{{ session('status') }}"></x-alert>
     @endif
 
-    <form method="post" action="{{ route('admin.news.update', ['news' => $news]) }}">
+    <form method="post" action="{{ route('admin.news.update', ['news' => $news]) }}" enctype="multipart/form-data">
         @csrf
         @method('put')
 
@@ -84,3 +84,24 @@
         <button type="submit" class="btn btn-success mb-2">Изменить</button>
     </form>
 @endsection
+
+@push('js')
+    <script>
+        var options = {
+            filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
+            filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token=',
+            filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
+            filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token='
+        };
+
+        // ClassicEditor
+        //     .create( document.querySelector( '#description' ), options )
+        //     .catch( error => {
+        //         console.error( error );
+        //     } );
+
+        // ClassicEditor.replace('description', options);
+        CKEDITOR.replace('description', options);
+
+    </script>
+@endpush

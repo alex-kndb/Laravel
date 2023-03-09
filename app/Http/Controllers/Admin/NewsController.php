@@ -11,10 +11,12 @@ use App\Http\Requests\Admin\News\EditRequest;
 use App\Models\News;
 use App\QueryBuilders\CategoriesQueryBuilder;
 use App\QueryBuilders\NewsQueryBuilder;
+use App\Services\UploadService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
+use Illuminate\Http\UploadedFile;
 
 class NewsController extends Controller
 {
@@ -97,11 +99,18 @@ class NewsController extends Controller
      *
      * @param EditRequest $request
      * @param News $news
+     * @param UploadService $uploadService
      * @return RedirectResponse
      */
-    public function update(EditRequest $request, News $news) : RedirectResponse
+    public function update(EditRequest $request, News $news, UploadService $uploadService) : RedirectResponse
     {
-        $news = $news->fill($request->validated());
+        $validated = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = $uploadService->uploadImage($request->file('image'));
+        }
+
+        $news = $news->fill($validated);
         if ($news->save()) {
             $news->categories()->sync($request->getCategoryIds());
             return \redirect()->route('admin.news.index')

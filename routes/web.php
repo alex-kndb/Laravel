@@ -17,6 +17,7 @@ use App\Http\Controllers\SocialController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use UniSharp\LaravelFilemanager\Lfm;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,12 +42,19 @@ Route::group(['middleware' => 'auth'], static function() {
 // admin routes
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'is_admin'], static function() {
     Route::get('/', AdminController::class)->name('index');
-    Route::get('/parser', ParserController::class)->name('parser');
+    Route::get('/parser', [ParserController::class, 'index'])
+        ->name('parser.index');
+    Route::get('/parser/start', [ParserController::class, 'parse'])
+        ->name('parser.start');
     Route::resource('categories', AdminCategoriesController::class);
     Route::resource('news', AdminNewsController::class);
     Route::resource('feedbacks', AdminFeedbacksController::class);
     Route::resource('sources', AdminSourcesController::class);
     Route::resource('users', AdminUsersController::class);
+});
+
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+    Lfm::routes();
 });
 
 // guest routes
